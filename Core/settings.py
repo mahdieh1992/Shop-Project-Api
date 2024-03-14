@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #app
+    'account',
+    #rest framework
+    'rest_framework',
+    'drf_yasg',
+    'rest_framework.authtoken'
+
 ]
 
 MIDDLEWARE = [
@@ -75,8 +83,12 @@ WSGI_APPLICATION = 'Core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':'postgres',
+        'USER':'postgres',
+        'PASSWORD':'postgres',
+        'HOST':'db',
+        'PORT':5432,
     }
 }
 
@@ -116,8 +128,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT=os.path.join(BASE_DIR,'static')
+
+MEDIA_URL='/media/'
+MEDIA_ROOT=[os.path.join(BASE_DIR,'media')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# determine user model
+AUTH_USER_MODEL="account.CustomUser"
+
+#rest_framework authentication
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+       'rest_framework.authentication.BasicAuthentication',
+       'rest_framework.authentication.SessionAuthentication',
+       'rest_framework.authentication.TokenAuthentication'
+    ]
+}
+
+
+LOGIN_URL = 'rest_framework:login'
+LOGOUT_URL = 'rest_framework:logout'
