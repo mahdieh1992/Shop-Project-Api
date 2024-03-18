@@ -6,7 +6,11 @@ from django.core.exceptions import ValidationError
 
 
 
+
 class UserLoginSerializer(serializers.Serializer):
+    """
+        serializer for login user
+    """
     email=serializers.CharField(
         label=_('Email'),
         write_only=True,
@@ -19,6 +23,9 @@ class UserLoginSerializer(serializers.Serializer):
    
 
     def validate(self,data):
+        """
+            checking user exist
+        """
         request=self.context.get('request')
         email=data.get('email')
         password=data.get('password')
